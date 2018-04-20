@@ -8,10 +8,15 @@ This SC is seperate from the  listings.sol (peter) - diff data structs
 and  encompass also the functions
 for set/ get a listing and any client reports ? (Peter) - architecture confirm.
 
+Arguments for these on-chain state - determined as 4 and set as strings
+Could reduce to bytes32 for less gas usage..  TBD -- depends on KYC/STD/PoC data
+that needs to be stored by various entities.
 
 SafeMath not needed.
 
-WIP. 24 / 3 / 18.
+WIP. 20 / 4 / 18.
+
+The _address is the on-file wallet address of the Service Provider
 
 */
 
@@ -96,7 +101,7 @@ contract Ownable {
 
 
 
-//  WIP
+
 pragma solidity ^0.4.18;
 
 contract kycstdsetget is Ownable {
@@ -108,9 +113,12 @@ contract kycstdsetget is Ownable {
     bytes32 arg4;
   }
 
+bool _confirm;
+
 mapping (address => Spkycstdconfirms) spconfirms;
 address[] private spconfirmsarray;
 
+  event Kycstdsetok (bool _confirm );
 
   event Kycstdgetok (
     address _address,
@@ -119,10 +127,11 @@ address[] private spconfirmsarray;
     bytes32 _arg3,
     bytes32 _arg4
 );
+
   function kycstdsetget()
 {
 
-    }  // Fallback
+    }  // Fallback - TBD
 
 
   function kycstdset(address _address, bytes32 _arg1, bytes32 _arg2, bytes32 _arg3, bytes32 _arg4) onlyOwner private returns (bool)
@@ -136,7 +145,9 @@ address[] private spconfirmsarray;
 
     spconfirmsarray.push(_address)-1;
 
-    // ...etc
+    //  Only owner can set the state - can change from front end if needs be - TBD
+
+    emit Kycstdsetok ( _confirm );
 
   }
 
