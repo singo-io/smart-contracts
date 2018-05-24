@@ -1,6 +1,6 @@
 pragma solidity ^0.4.21;
 
-import 'zeppelin-solidity/contracts/token/ERC20/TokenVesting.sol';
+import 'openzeppelin-solidity/contracts/token/ERC20/TokenVesting.sol';
 
 contract TokenVestingFactory is Ownable {
     event Created(TokenVesting vesting);
@@ -17,6 +17,7 @@ contract TokenVestingFactory is Ownable {
             _duration,
             true
         );
+        vesting.transferOwnership(msg.sender);
         emit Created(vesting);
         return vesting;
     }
